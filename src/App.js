@@ -2,8 +2,18 @@ import React, { Component } from 'react';
 import * as THREE from 'three'
 
 export default class App extends Component {
-  init(e) {
-    if (e == null) return;
+  constructor(props) {
+    super(props);
+
+    this.init = this.init.bind(this); 
+  }
+
+  clearCanvas() {
+    if (document.body.querySelector('canvas')) document.body.removeChild(document.body.querySelector('canvas'));
+  }
+
+  init() {
+    this.clearCanvas();
     let scene = new THREE.Scene();
     let camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
     
@@ -12,10 +22,10 @@ export default class App extends Component {
     document.body.appendChild( renderer.domElement );
 
     let geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    let material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+    let material = new THREE.MeshBasicMaterial( { color:0xBDA01D } );
     let cube = new THREE.Mesh( geometry, material );
     scene.add( cube );
-    
+
     camera.position.z = 5;
 
     function animate() {
@@ -27,8 +37,9 @@ export default class App extends Component {
     animate();
   }
   render() {
+    this.init();
     return (    
-    <div id="vp" ref={this.init}>
+    <div id="vp">
     </div>
     )
   }
