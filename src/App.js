@@ -12,6 +12,14 @@ export default class App extends Component {
     if (document.body.querySelector('canvas')) document.body.removeChild(document.body.querySelector('canvas'));
   }
 
+  getRandomHex() {
+    let result = '';
+    for (let i = 0; i < 3; i++) {
+      result += (~~(Math.random()*257)).toString(16);
+    }
+    return result;
+  }
+
   init() {
     this.clearCanvas();
     let scene = new THREE.Scene();
@@ -21,17 +29,25 @@ export default class App extends Component {
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
 
-    let geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    let material = new THREE.MeshBasicMaterial( { color:0xBDA01D } );
-    let cube = new THREE.Mesh( geometry, material );
-    scene.add( cube );
+    camera.position.z = 100;
+    camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-    camera.position.z = 5;
+    let geometry = new THREE.Geometry;
+    geometry.vertices.push(new THREE.Vector3(-10, 0, 0));
+    geometry.vertices.push(new THREE.Vector3(0, 10, 0));
+    geometry.vertices.push(new THREE.Vector3(10, 0, 0));
+    geometry.vertices.push(new THREE.Vector3(-10, 0, 0));
+
+    let material = new THREE.LineBasicMaterial( { color:0x0000ff } );
+
+    let lines = new THREE.Line( geometry, material );
+
+
+    scene.add( lines );
 
     function animate() {
       requestAnimationFrame( animate );
-      cube.rotation.x += 0.1;
-      cube.rotation.y += 0.1;
+
       renderer.render( scene, camera );
     }
     animate();
