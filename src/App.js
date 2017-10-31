@@ -13,7 +13,7 @@ export default class App extends Component {
   }
 
   getRandomHex() {
-    let result = '';
+    let result = '#';
     for (let i = 0; i < 3; i++) {
       result += (~~(Math.random()*257)).toString(16);
     }
@@ -27,35 +27,33 @@ export default class App extends Component {
     
     let renderer = new THREE.WebGLRenderer();
     renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setClearColor( 0xfff6e6 );
     document.body.appendChild( renderer.domElement );
 
-    camera.position.z = 100;
+    camera.position.set(5,10,0);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-    let geometry = new THREE.Geometry;
-    geometry.vertices.push(new THREE.Vector3(-10, 0, 0));
-    geometry.vertices.push(new THREE.Vector3(0, 10, 0));
-    geometry.vertices.push(new THREE.Vector3(10, 0, 0));
-    geometry.vertices.push(new THREE.Vector3(-10, 0, 0));
+    let plane = new THREE.Mesh(
+      new THREE.PlaneGeometry(5, 5, 5, 5),
+      new THREE.MeshBasicMaterial( { color: 0x393839, wireframe: true } )
+    )
 
-    let material = new THREE.LineBasicMaterial( { color:0x0000ff } );
-
-    let lines = new THREE.Line( geometry, material );
-
-
-    scene.add( lines );
+    plane.rotateX(Math.PI/2);
+    scene.add( plane );
 
     function animate() {
       requestAnimationFrame( animate );
-
+      plane.rotateX(0.025);
       renderer.render( scene, camera );
     }
     animate();
   }
+
   render() {
     this.init();
     return (    
     <div id="vp">
+      <div id="info">Test</div>
     </div>
     )
   }
